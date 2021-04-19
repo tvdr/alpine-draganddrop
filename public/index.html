@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Alpine.js x-dnd drag and drop directive</title>
+
+
+    <script src="https://cdn.jsdelivr.net/gh/alpine-collective/alpine-magic-helpers@1.2.x/dist/index.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/gh/tvdr/alpine-tempclass@1.0.0/dist/index.js"></script>
+    <script src="./xdnd.js"></script>
+    <link href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+
+
+</head>
+<body class="flex flex-col justify-center m-24 bg-grey-300">
+
+<div x-data="{showsalad:true,iftomato:true}">
+
+    <div class="flex-row flex justify-center mb-3">
+        <div class="w-64 text-center flex flex-col ">
+            <div>Max 2 items on this side</div>
+            <div>Callback when drop rejected</div>
+        </div>
+        <div class="w-64 text-center flex flex-col">
+            <div>Bounce when dropped on this side</div>
+        </div>
+        <div class="w-64">
+
+        </div>
+    </div>
+
+    <div class="flex-row flex justify-center mb-5 ">
+
+        <div class=" w-64 border-black border-solid border-2 p-8 pt-4 rounded-md mr-5" x-data="{}"
+             x-dnd='{nodes:"div.draggable",group:"vegetables",classIfDroppable:"bg-green-300 border-green",classIfNotDroppable:"bg-gray-200 border-red",onDropCancel:(dragged)=>{$tempclass(["transition-all","duration-700","bg-purple-500","animate-spin"],1500,dragged)},onBeforeDrop:function(dragged,clone){ return this.querySelectorAll(".draggable").length < 2}}'>
+            <div class="ml-5 mr-5 mb-3 border-b justify-self-center text-center">Veggies</div>
+
+            <div class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white">Potato</div>
+        </div>
+        <div class=" w-64 border-black border-solid border-2 p-8 pt-4  rounded-md" x-data="{}" x-init="$nextTick(()=>{$refresh()})"
+             x-dnd='{nodes:"div.draggable",group:"vegetables",classIfDroppable:"bg-green-300 border-green",classIfNotDroppable:"bg-gray-200 border-red",onAfterDrop:function(dragged){$tempclass("animate-bounce",3000,dragged)}}'>
+            <div class="ml-5 mr-5 mb-3 border-b justify-self-center text-center">Veggies</div>
+
+            <div x-show="$parent.showsalad" class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white">Salad</div>
+            <template x-if="$parent.iftomato">
+                <div class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white">Tomato</div>
+            </template>
+            <div class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white">Corn</div>
+        </div>
+        <div class="w-64">
+            <div class="flex flex-col text-center mb-3 p-4">
+                x-show "salad" with pressing
+                <br>
+                <button class="p-2 bg-green-400 hover:bg-green-600 text-white justify-self-center rounded-md mb-3" @click="showsalad = !showsalad">THIS</button>
+
+            </div>
+            <div class="flex flex-col text-center mb-3 p-4">
+                x-if "tomato" with pressing
+                <br>
+                <button class="p-2 bg-green-400 hover:bg-green-600 text-white justify-self-center rounded-md mb-3" @click="iftomato = !iftomato;$nextTick(()=>{$refresh()})">THIS</button>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<hr class="mb-5">
+<div class="flex-row flex justify-center mb-3">
+    <div class="w-3/4 text-center flex flex-col ">
+        <div>reject drop based on group-id</div>
+    </div>
+
+</div>
+<div class="flex-row flex  justify-center mb-5">
+    <div class=" w-64 border-black border-solid border-2 p-8 pt-4 rounded-md mr-5" x-data="{}"
+         x-dnd='{nodes:"div.draggable",group:"fruits",classIfDroppable:"bg-green-300 border-green",classIfNotDroppable:"bg-gray-200 border-red"}'>
+        <div class="ml-5 mr-5 mb-3 border-b justify-self-center text-center">Fruits</div>
+        <div style="z-index: 10" class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white">Apple</div>
+        <div class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white">Banana</div>
+    </div>
+    <div class=" w-64 border-black border-solid border-2 p-8 pt-4 rounded-md mr-5" x-data="{}"
+         x-dnd='{nodes:"div.draggable",group:"fruits",classIfDroppable:"bg-green-300 border-green",classIfNotDroppable:"bg-gray-200 border-red"}'>
+        <div class="ml-5 mr-5 mb-3 border-b justify-self-center text-center">Fruits</div>
+        <div class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white">Strawberry</div>
+    </div>
+    <div class=" w-64 border-black border-solid border-2 p-8 pt-4 rounded-md" x-data="{}"
+         x-dnd='{nodes:"div.draggable",group:"cars",classIfDroppable:"bg-green-300 border-green",classIfNotDroppable:"bg-gray-200 border-red"}'>
+        <div class="ml-5 mr-5 mb-3 border-b justify-self-center text-center">Cars</div>
+        <div class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white">BMW</div>
+        <div class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white">VW</div>
+        <div class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white">Mercedes</div>
+        <div class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white">Toyota</div>
+    </div>
+</div>
+
+<hr class="mb-5">
+<div class="flex-row flex justify-center mb-3">
+    <div class="w-3/4 text-center flex flex-col">
+        <div class="mb-2">x-dnd works with x-for, you can add items dynamically (THX $refresh)</div>
+        <div class="mb-2">In this example dropped items are always rejected as we return false from onBeforeDrop, just data is exchanged between the droptargets</div>
+        <div class="mb-2">multiselect showcases working x-model reactivity</div>
+    </div>
+
+</div>
+<div class="flex-row flex justify-center mb-5">
+    <div class="flex flex-col w-64 border-black border-solid border-2 p-8 pt-4 rounded-md mr-5" x-init="init()" x-data="xfordragLeft()" x-dnd='dndconfig'>
+        <div class="ml-5 mr-5 mb-3 border-b justify-self-center text-center">Numbers</div>
+        <button class="p-2 bg-red-300 hover:bg-red-600 text-white justify-self-center rounded-md mb-3" @click="numbers = numbers.concat([Math.round(Math.random()*100)])">+ Add list item</button>
+        <template x-for="(num,index) in numbers" :key="index">
+            <div class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white" :data-index="index" :data-num="num" x-text="num"></div>
+        </template>
+        <select multiple placeholder="List item numbers" class="p-1 mt-3 border" x-model="numbers">
+            <template x-for="(num,index) in numbers" :key="index">
+                <option :value="num" x-text="num"></option>
+            </template>
+        </select>
+
+    </div>
+    <div class="flex flex-col w-64 border-black border-solid border-2 p-8 pt-4 rounded-md mr-5" x-init="init()" x-data="xfordragRight()" x-dnd='dndconfig'>
+        <div class="ml-5 mr-5 mb-3 border-b justify-self-center text-center">Numbers</div>
+        <button class="p-2 bg-red-300 hover:bg-red-600 text-white justify-self-center rounded-md mb-3" @click="numbers = numbers.concat([Math.round(Math.random()*100)])">+ Add list item</button>
+        <template x-for="(num,index) in numbers" :key="index">
+            <div class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white" :data-index="index" :data-num="num" x-text="num"></div>
+        </template>
+    </div>
+</div>
+<script>
+
+    function xfordragmaster() {
+        return {
+            numbers: [],
+            dndconfig: {
+                nodes: "div.draggable",
+                group: "numbers",
+                classIfDroppable: "bg-green-300 border-green",
+                classIfNotDroppable: "bg-gray-200 border-red",
+                onBeforeDrop: function (dragged, clone) {
+                    if (this !== dragged.$draggedfrom) {
+
+                        dragged.$draggedfrom.__x.$data.numbers = dragged.$draggedfrom.__x.$data.numbers.filter((val, key) => {
+                            return parseInt(key) !== parseInt(dragged.dataset.index)
+                        })
+
+                        this.__x.$data.numbers = this.__x.$data.numbers.concat(parseInt(dragged.dataset.num))
+
+                    }
+
+                    return false;
+                }
+            },
+            init() {
+                let _this = this;
+
+                this.$nextTick(() => {
+                    _this.$refresh();
+                });
+
+                this.$watch('numbers', (value) => {
+
+                    _this.$nextTick(() => {
+                        _this.$refresh();
+                    })
+
+                })
+            },
+
+        }
+    }
+
+    function xfordragLeft() {
+        var thisconfig = Object.assign({}, xfordragmaster());
+        //thisconfig.numbers = [1, 2, 3, 4, 5];
+
+        return thisconfig;
+    }
+
+    function xfordragRight() {
+        var thisconfig = Object.assign({}, xfordragmaster());
+
+        return thisconfig;
+    }
+</script>
+
+<hr class="mb-5">
+<div class="flex-row flex justify-center mb-3">
+    <div class="w-3/4 text-center flex flex-col">
+        <div class="mb-2">Above example extended to demo handling objects with rich property set</div>
+        <div class="mb-2">different x-for template is used in every droptarget</div>
+    </div>
+
+</div>
+<div class="flex-row flex justify-center mb-5">
+    <div class="flex flex-col items-center w-1/3 border-black border-solid border-2 p-8 pt-4 rounded-md mr-5" x-init="init()" x-data="dndrichobjectsPhone()" x-dnd='dndconfig'>
+        <div class="ml-5 mr-5 mb-3 border-b justify-self-center  text-center">Phone number</div>
+        <template x-for="(user,index) in users" :key="index">
+            <div :data-index="index" class="draggable w-full mb-3 bg-yellow-100 flex items-center p-2 rounded-xl shadow border">
+                <div class="flex items-center space-x-4">
+                    <img :src="user.picture.thumbnail" alt="My profile" class="w-16 h-16 rounded-full">
+                </div>
+                <div class="flex-grow p-3">
+                    <div class="font-semibold text-gray-700" x-text="user.name.first + ' ' +user.name.last">
+
+                    </div>
+                    <div class="text-sm text-gray-500" x-text="user.phone">
+                    </div>
+                </div>
+            </div>
+        </template>
+
+
+    </div>
+    <div class="flex flex-col items-center w-1/3 border-black border-solid border-2 p-8 pt-4 rounded-md mr-5" x-init="init()" x-data="dndrichobjectsEmail()" x-dnd='dndconfig'>
+        <div class="ml-5 mr-5 mb-3 border-b justify-self-center  text-center">Email</div>
+        <template x-for="(user,index) in users" :key="index">
+            <div :data-index="index" class="draggable w-full mb-3 bg-green-100  flex items-center p-2 rounded-xl shadow border">
+                <div class="flex items-center space-x-4">
+                    <img :src="user.picture.thumbnail" alt="My profile" class="w-16 h-16 rounded-full">
+                </div>
+                <div class="flex-grow p-3">
+                    <div class="font-semibold text-gray-700" x-text="user.name.first + ' ' +user.name.last">
+
+                    </div>
+                    <div class="text-sm text-gray-500" x-text="user.email">
+                    </div>
+                </div>
+            </div>
+        </template>
+
+
+    </div>
+    <div class="flex flex-col items-center w-1/3 border-black border-solid border-2 p-8 pt-4 rounded-md mr-5" x-init="init()" x-data="dndrichobjectsCity()" x-dnd='dndconfig'>
+        <div class="ml-5 mr-5 mb-3 border-b justify-self-center  text-center">City</div>
+        <template x-for="(user,index) in users" :key="index">
+            <div :data-index="index" class="draggable w-full mb-3 bg-blue-100  flex items-center p-2 rounded-xl shadow border">
+                <div class="flex items-center space-x-4">
+                    <img :src="user.picture.thumbnail" alt="My profile" class="w-16 h-16 rounded-full">
+                </div>
+                <div class="flex-grow p-3">
+                    <div class="font-semibold text-gray-700" x-text="user.name.first + ' ' +user.name.last">
+
+                    </div>
+                    <div class="text-sm text-gray-500" x-text="user.location.country">
+                    </div>
+                </div>
+            </div>
+        </template>
+
+
+    </div>
+
+</div>
+<script>
+
+    function dndrichobjectsmaster() {
+        return {
+            users: [],
+            dndconfig: {
+                nodes: "div.draggable",
+                group: "users",
+                classIfDroppable: "bg-green-300 border-green",
+                classIfNotDroppable: "bg-gray-200 border-red",
+                onBeforeDrop: function (dragged, clone) {
+
+                    if (this !== dragged.$draggedfrom) {
+
+                        dragged.style.visibility = 'hidden';
+
+                        //add to target
+                        this.__x.$data.users = this.__x.$data.users.concat(dragged.$draggedfrom.__x.$data.users[dragged.dataset.index])
+
+                        //remove from origin
+                        dragged.$draggedfrom.__x.$data.users = dragged.$draggedfrom.__x.$data.users.filter((val, key) => {
+                            return parseInt(key) !== parseInt(dragged.dataset.index)
+                        })
+
+                        dragged.style.visibility = '';
+
+
+                    }
+
+                    return false;
+                }
+            },
+            init() {
+                let _this = this;
+
+
+                this.$nextTick(() => {
+                    _this.$refresh();
+                });
+
+                this.$watch('users', (value) => {
+
+                    _this.$nextTick(() => {
+                        _this.$refresh();
+                    })
+
+                })
+            }
+
+
+        }
+    }
+
+    function dndrichobjectsPhone() {
+        var thisconfig = Object.assign({}, dndrichobjectsmaster());
+        thisconfig.users = [{
+            "gender": "female",
+            "name": {"title": "Ms", "first": "Ellen", "last": "Laakso"},
+            "location": {
+                "street": {"number": 7747, "name": "Mannerheimintie"},
+                "city": "Kerimäki",
+                "state": "North Karelia",
+                "country": "Finland",
+                "postcode": 63034,
+                "coordinates": {"latitude": "-11.9699", "longitude": "98.4264"},
+                "timezone": {"offset": "+7:00", "description": "Bangkok, Hanoi, Jakarta"}
+            },
+            "email": "ellen.laakso@example.com",
+            "login": {
+                "uuid": "26fdc645-923f-4040-a0ef-b1cef38ca606",
+                "username": "whitepanda192",
+                "password": "tyrone",
+                "salt": "ko8aqcla",
+                "md5": "044b315641b1b3261a92c02c681e6a96",
+                "sha1": "5f259d20174ca2d3d3bab69e3b5f4b9bd4830be4",
+                "sha256": "df08378fd22e9ce06117ff408abe9a5b7b679c6d0887968cded508319ecc9f27"
+            },
+            "dob": {"date": "1986-06-11T12:12:11.474Z", "age": 35},
+            "registered": {"date": "2017-10-23T02:42:00.934Z", "age": 4},
+            "phone": "03-576-404",
+            "cell": "045-473-29-29",
+            "id": {"name": "HETU", "value": "NaNNA984undefined"},
+            "picture": {
+                "large": "https://randomuser.me/api/portraits/women/93.jpg",
+                "medium": "https://randomuser.me/api/portraits/med/women/93.jpg",
+                "thumbnail": "https://randomuser.me/api/portraits/thumb/women/93.jpg"
+            },
+            "nat": "FI"
+        }, {
+            "gender": "female",
+            "name": {"title": "Mademoiselle", "first": "Mira", "last": "Moulin"},
+            "location": {
+                "street": {"number": 6529, "name": "Rue de la Charité"},
+                "city": "Brienz (Be)",
+                "state": "Thurgau",
+                "country": "Switzerland",
+                "postcode": 9757,
+                "coordinates": {"latitude": "3.3039", "longitude": "-20.9034"},
+                "timezone": {"offset": "+9:30", "description": "Adelaide, Darwin"}
+            },
+            "email": "mira.moulin@example.com",
+            "login": {
+                "uuid": "b53f3ffd-73cb-4b7e-aa1b-d2edd4593b74",
+                "username": "heavyfish713",
+                "password": "redbaron",
+                "salt": "j52ZqxJp",
+                "md5": "2f7aba065ba74505e4568f54053a1e29",
+                "sha1": "c125b8b29cf15e45de7c2a7ae4187e0b552475ad",
+                "sha256": "999389492319a4e7a1fac1d2c6848116642348eaab23394b16dbac23266ee41b"
+            },
+            "dob": {"date": "1995-12-24T05:56:09.225Z", "age": 26},
+            "registered": {"date": "2016-12-09T01:20:09.024Z", "age": 5},
+            "phone": "075 048 84 78",
+            "cell": "079 651 12 83",
+            "id": {"name": "AVS", "value": "756.3063.0659.80"},
+            "picture": {
+                "large": "https://randomuser.me/api/portraits/women/41.jpg",
+                "medium": "https://randomuser.me/api/portraits/med/women/41.jpg",
+                "thumbnail": "https://randomuser.me/api/portraits/thumb/women/41.jpg"
+            },
+            "nat": "CH"
+        }, {
+            "gender": "male",
+            "name": {"title": "Mr", "first": "Harold", "last": "Marshall"},
+            "location": {
+                "street": {"number": 9404, "name": "The Avenue"},
+                "city": "Truro",
+                "state": "Surrey",
+                "country": "United Kingdom",
+                "postcode": "K5C 8TH",
+                "coordinates": {"latitude": "32.6733", "longitude": "161.5679"},
+                "timezone": {"offset": "-10:00", "description": "Hawaii"}
+            },
+            "email": "harold.marshall@example.com",
+            "login": {
+                "uuid": "d63f107d-e6bd-4fa8-b23d-450a60a8fd08",
+                "username": "sadbutterfly138",
+                "password": "casper1",
+                "salt": "81N4G5wl",
+                "md5": "dc504974e2fc3eb872d553650be282b6",
+                "sha1": "aea9f6ec4bda39bf4c4e5289a2b1adf16dd6b309",
+                "sha256": "7e8b318772eb526dde616dfe55fcbd032fbaf2093d1c68f1925d6590bcc8931e"
+            },
+            "dob": {"date": "1995-06-17T05:54:31.084Z", "age": 26},
+            "registered": {"date": "2004-09-12T17:55:30.237Z", "age": 17},
+            "phone": "028 8036 2852",
+            "cell": "0705-867-856",
+            "id": {"name": "NINO", "value": "XH 68 96 92 I"},
+            "picture": {
+                "large": "https://randomuser.me/api/portraits/men/36.jpg",
+                "medium": "https://randomuser.me/api/portraits/med/men/36.jpg",
+                "thumbnail": "https://randomuser.me/api/portraits/thumb/men/36.jpg"
+            },
+            "nat": "GB"
+        }, {
+            "gender": "male",
+            "name": {"title": "Mr", "first": "Tyler", "last": "Johnson"},
+            "location": {
+                "street": {"number": 2882, "name": "Trafalgar Street"},
+                "city": "Timaru",
+                "state": "Canterbury",
+                "country": "New Zealand",
+                "postcode": 11422,
+                "coordinates": {"latitude": "-40.0476", "longitude": "-38.0554"},
+                "timezone": {"offset": "-7:00", "description": "Mountain Time (US & Canada)"}
+            },
+            "email": "tyler.johnson@example.com",
+            "login": {
+                "uuid": "81fded8f-dae8-4e52-bb10-f25595c51453",
+                "username": "organicbutterfly412",
+                "password": "quan",
+                "salt": "5PnU9Ytv",
+                "md5": "303e8f1c846480011bfa3d28bb5ada5c",
+                "sha1": "175bf84390b1e13ede5b3ae4c4cde6b7f0cf7527",
+                "sha256": "d15d3ed8c3d6a4105cceb3aadd6b0efbc00a720cc5f1f49ed40408dbcbe68c27"
+            },
+            "dob": {"date": "1968-02-29T16:59:18.687Z", "age": 53},
+            "registered": {"date": "2018-11-21T11:35:29.125Z", "age": 3},
+            "phone": "(680)-421-3462",
+            "cell": "(070)-655-5127",
+            "id": {"name": "", "value": null},
+            "picture": {
+                "large": "https://randomuser.me/api/portraits/men/33.jpg",
+                "medium": "https://randomuser.me/api/portraits/med/men/33.jpg",
+                "thumbnail": "https://randomuser.me/api/portraits/thumb/men/33.jpg"
+            },
+            "nat": "NZ"
+        }, {
+            "gender": "female",
+            "name": {"title": "Mrs", "first": "Jacqueline", "last": "Tucker"},
+            "location": {
+                "street": {"number": 7609, "name": "W 6th St"},
+                "city": "Denton",
+                "state": "Nebraska",
+                "country": "United States",
+                "postcode": 92936,
+                "coordinates": {"latitude": "-33.5786", "longitude": "-139.9866"},
+                "timezone": {"offset": "+8:00", "description": "Beijing, Perth, Singapore, Hong Kong"}
+            },
+            "email": "jacqueline.tucker@example.com",
+            "login": {
+                "uuid": "1bdc9823-9de1-46af-aff1-4197281b53b3",
+                "username": "ticklishwolf540",
+                "password": "stimpy",
+                "salt": "pvGArcq2",
+                "md5": "c4c29ee7cdeb41f2eb05d86315d4c64c",
+                "sha1": "d9e53d642e222570273da967cfe4ccbd0b9bdf6f",
+                "sha256": "8ba136010070f694344750131ad2570b2dfb41ba04d0251325a7911a14be9969"
+            },
+            "dob": {"date": "1952-02-20T21:34:20.286Z", "age": 69},
+            "registered": {"date": "2004-06-18T01:59:52.942Z", "age": 17},
+            "phone": "(144)-173-9060",
+            "cell": "(544)-529-6518",
+            "id": {"name": "SSN", "value": "723-15-1644"},
+            "picture": {
+                "large": "https://randomuser.me/api/portraits/women/84.jpg",
+                "medium": "https://randomuser.me/api/portraits/med/women/84.jpg",
+                "thumbnail": "https://randomuser.me/api/portraits/thumb/women/84.jpg"
+            },
+            "nat": "US"
+        }, {
+            "gender": "male",
+            "name": {"title": "Mr", "first": "Elias", "last": "Lakso"},
+            "location": {
+                "street": {"number": 1832, "name": "Satakennankatu"},
+                "city": "Uusikaupunki",
+                "state": "South Karelia",
+                "country": "Finland",
+                "postcode": 92139,
+                "coordinates": {"latitude": "89.6612", "longitude": "8.2887"},
+                "timezone": {"offset": "+2:00", "description": "Kaliningrad, South Africa"}
+            },
+            "email": "elias.lakso@example.com",
+            "login": {
+                "uuid": "3cbe0802-02b6-426d-9396-43b69fc83ff9",
+                "username": "beautifulcat399",
+                "password": "alexa",
+                "salt": "awwgLPbl",
+                "md5": "7f624c3ff1b6c0f6e2fba8b0ee4ca54b",
+                "sha1": "e7eaa36a7809fa8ab19002610466ba840db41242",
+                "sha256": "9857ac2f95616cbfef7500315812d55b63a258a14b31cffe29ce8174e55af57a"
+            },
+            "dob": {"date": "1960-11-27T09:08:03.092Z", "age": 61},
+            "registered": {"date": "2011-12-10T07:31:14.747Z", "age": 10},
+            "phone": "05-802-202",
+            "cell": "042-770-43-79",
+            "id": {"name": "HETU", "value": "NaNNA783undefined"},
+            "picture": {
+                "large": "https://randomuser.me/api/portraits/men/86.jpg",
+                "medium": "https://randomuser.me/api/portraits/med/men/86.jpg",
+                "thumbnail": "https://randomuser.me/api/portraits/thumb/men/86.jpg"
+            },
+            "nat": "FI"
+        }];
+
+
+        return thisconfig;
+    }
+
+    function dndrichobjectsEmail() {
+        var thisconfig = Object.assign({}, dndrichobjectsmaster());
+
+        return thisconfig;
+    }
+
+    function dndrichobjectsCity() {
+        var thisconfig = Object.assign({}, dndrichobjectsmaster());
+
+        return thisconfig;
+    }
+</script>
+
+
+<hr class="mb-5">
+<div x-data="{inputmodel_1:'default_value',selectmodel:''}">
+
+
+    <div class="flex-row flex justify-center mb-3">
+        <div class="w-3/4 text-center flex flex-col ">
+            <div>listitem reactivity</div>
+        </div>
+
+    </div>
+    <div class="flex-row flex  justify-center mb-5">
+        <div class=" w-64 border-black border-solid border-2 p-8 pt-4 rounded-md mr-5"
+             x-dnd='{nodes:"div.draggable",group:"fruits",classIfDroppable:"bg-green-300 border-green",classIfNotDroppable:"bg-gray-200 border-red"}'>
+            <div class="ml-5 mr-5 mb-3 border-b justify-self-center text-center">Inputs</div>
+            <div class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white">
+                <input class="border rounded-sm text-black" type="text" x-model="inputmodel_1">
+                <span x-text="inputmodel_1"></span>
+            </div>
+            <div class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white">Banana</div>
+            <div class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white">Select value is
+                <div class="inline-block" x-html="selectmodel == '' ? '<span class=\' bg-red-300 p-1 rounded\'>not set</span> ' : selectmodel"></div>
+            </div>
+
+            <div class="draggable">
+                <div class=" p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white flex flex-col">
+                    <div><input type="checkbox" name="cb"> Checkbox1</div>
+                    <div><input type="checkbox" name="cb"> Checkbox2</div>
+                    ALMAFA
+                </div>
+            </div>
+
+
+            <div class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white flex flex-col">
+                <div><input type="radio" name="radio"> Radio1</div>
+                <div><input type="radio" name="radio"> Radio2</div>
+            </div>
+            <div class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white">
+                <select x-model="selectmodel" class="w-full text-black" name="select" id="select_1">
+                    <option value="">Please select</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+        </div>
+        <div class=" w-64 border-black border-solid border-2 p-8 pt-4 rounded-md mr-5"
+             x-dnd='{nodes:"div.draggable",group:"fruits",classIfDroppable:"bg-green-300 border-green",classIfNotDroppable:"bg-gray-200 border-red"}'>
+            <div class="ml-5 mr-5 mb-3 border-b justify-self-center text-center">Inputs</div>
+            <div x-ref="timeitem" class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white" x-text="new Date().toTimeString()"></div>
+            <div class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white">
+                <input class="border rounded-sm text-black" type="text" x-model="inputmodel_1">
+                <span x-text="inputmodel_1"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex-row flex justify-center mb-5">
+        <input class="border rounded-sm text-black" type="text" x-model="inputmodel_1">
+    </div>
+</div>
+
+</body>
+</html>
