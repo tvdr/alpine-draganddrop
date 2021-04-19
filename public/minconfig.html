@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Alpine.js x-dnd drag and drop directive</title>
+
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
+    <script src="./xdnd.js"></script>
+    <link href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="flex flex-col justify-center m-24 bg-grey-300">
+    <div  class="flex-row flex justify-center">
+        <div x-data="{}" x-dnd='{nodes:".draggable",group:"dnd_numbers"}' class="w-64 border-black border-solid border-2 p-8 pt-4 rounded-md mr-5">
+            <div class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white">1</div>
+            <div class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white">2</div>
+            <div class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white">3</div>
+            <div class="draggable p-2 bg-blue-500 hover:bg-blue-700 rounded-lg mb-2 text-white">4</div>
+        </div>
+        <div x-data="{}" x-dnd='{nodes:".draggable",group:"dnd_numbers"}' class="w-64 border-black border-solid border-2 p-8 pt-4 rounded-md mr-5">
+
+        </div>
+    </div>
+</body>
+</html>
