@@ -15,7 +15,7 @@ Heavily inspired by [alpine-magic-helpers](https://github.com/alpine-collective/
 Include the following `<script>` tag in the `<head>` of your document before Alpine:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/tvdr/alpine-draganddrop@1.1.x/dist/index.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/tvdr/alpine-draganddrop@0.x.x/dist/index.min.js" defer></script>
 ```
 
 ---
