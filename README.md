@@ -2,8 +2,7 @@
 
 Custom directive for [Alpine.js](https://github.com/alpinejs/alpine)
 
-[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/tvdr/alpine-draganddrop?label=version&style=flat-square)](https://www.npmjs.com/package/alpine-magic-helpers)
-[![](https://data.jsdelivr.com/v1/package/gh/tvdr/alpine-draganddrop/badge)](https://www.jsdelivr.com/package/gh/alpine-collective/alpine-magic-helpers)
+[![](https://data.jsdelivr.com/v1/package/gh/tvdr/alpine-draganddrop/badge)](https://www.jsdelivr.com/package/gh/tvdr/alpine-draganddrop)
 
 ## About
 
